@@ -1,0 +1,142 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: images
+public_folder: /images
+
+# Jazyk administrace
+locale: cs
+
+collections:
+  - name: "obsah"
+    label: "Obsah webu"
+    files:
+      - name: "hlavni"
+        label: "🏠 Hlavní stránka"
+        file: "content/data.json"
+        format: json
+        fields:
+
+          # ── ZÁKLADNÍ INFORMACE ──
+          - label: "🏢 Název firmy"
+            name: "firma_nazev"
+            widget: "string"
+            hint: "Zobrazuje se v logu a záložce prohlížeče. Př: Petr Novák nebo Novák.cz"
+
+          - label: "📝 Meta popis (pro Google)"
+            name: "meta_popis"
+            widget: "text"
+            hint: "Krátký popis webu pro vyhledávače. Ideálně 120-160 znaků."
+
+          # ── HERO SEKCE ──
+          - label: "🎯 Hero – štítek nad nadpisem"
+            name: "hero_kicker"
+            widget: "string"
+            hint: "Malý text nad hlavním nadpisem. Př: Instalatér · Brno nebo Účetní služby"
+
+          - label: "🎯 Hero – hlavní nadpis"
+            name: "hero_nadpis"
+            widget: "text"
+            hint: "Hlavní nadpis stránky. Lze použít HTML: Váš web.<br><span class='accent'>Hotový za týden.</span>"
+
+          - label: "🎯 Hero – popis pod nadpisem"
+            name: "hero_popis"
+            widget: "text"
+            hint: "Krátký popis v 2-3 větách. Co klient nabízí a proč si ho vybrat."
+
+          - label: "🎯 Hero – text hlavního tlačítka"
+            name: "hero_tlacitko1"
+            widget: "string"
+            default: "Kontaktovat"
+
+          - label: "🎯 Hero – text druhého tlačítka"
+            name: "hero_tlacitko2"
+            widget: "string"
+            default: "Naše služby"
+
+          - label: "📊 Statistiky (čísla pod hero)"
+            name: "statistiky"
+            widget: "list"
+            hint: "Až 4 čísla s popisem. Př: 24h / Odpovím na poptávku"
+            fields:
+              - { label: "Číslo", name: "cislo", widget: "string", hint: "Př: 24h nebo 10+" }
+              - { label: "Popis", name: "popis", widget: "string", hint: "Př: Odpovím na poptávku" }
+
+          # ── SLUŽBY ──
+          - label: "🛠 Název sekce Služby"
+            name: "sluzby_nadpis"
+            widget: "string"
+            default: "Co nabízíme"
+
+          - label: "🛠 Popis sekce Služby"
+            name: "sluzby_popis"
+            widget: "text"
+
+          - label: "🛠 Jednotlivé služby"
+            name: "sluzby"
+            widget: "list"
+            hint: "Až 6 služeb (karet). Pro ikonu použijte emoji."
+            fields:
+              - { label: "Ikona (emoji)", name: "ikona", widget: "string", hint: "Př: 🔧 nebo 🎨" }
+              - { label: "Název služby", name: "nazev", widget: "string" }
+              - { label: "Popis služby", name: "popis", widget: "text" }
+
+          # ── O MNĚ ──
+          - label: "👤 Fotografie"
+            name: "foto"
+            widget: "image"
+            required: false
+            hint: "Portrétní foto. Ideálně formát 3:4."
+
+          - label: "👤 Jméno"
+            name: "jmeno"
+            widget: "string"
+
+          - label: "👤 Pozice / titul"
+            name: "pozice"
+            widget: "string"
+            hint: "Př: Instalatér nebo Účetní poradce"
+
+          - label: "👤 Název sekce O mně"
+            name: "about_nadpis"
+            widget: "string"
+            default: "O mně"
+
+          - label: "👤 První odstavec"
+            name: "about_text1"
+            widget: "text"
+
+          - label: "👤 Druhý odstavec"
+            name: "about_text2"
+            widget: "text"
+            required: false
+
+          - label: "👤 Dovednosti / klíčová slova"
+            name: "dovednosti"
+            widget: "list"
+            hint: "Tagy zobrazené pod textem. Př: React, SEO, Brno"
+
+          # ── KONTAKT ──
+          - label: "📞 Název sekce Kontakt"
+            name: "kontakt_nadpis"
+            widget: "string"
+            default: "Pojďme spolupracovat"
+
+          - label: "📞 Popis kontaktní sekce"
+            name: "kontakt_popis"
+            widget: "text"
+
+          - label: "📧 E-mail"
+            name: "email"
+            widget: "string"
+
+          - label: "📞 Telefon"
+            name: "telefon"
+            widget: "string"
+            hint: "Př: +420 123 456 789"
+
+          - label: "📍 Město"
+            name: "mesto"
+            widget: "string"
+            hint: "Zobrazuje se v patičce. Př: Brno nebo Praha"

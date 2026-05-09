@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" id="meta-description" content="">
+<title id="page-title">Načítání...</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green: #10b981;
+  --green-dim: rgba(16,185,129,0.10);
+  --green-border: rgba(16,185,129,0.22);
+  --bg: #080810;
+  --bg1: #0e0e1a;
+  --bg2: #151524;
+  --text: #eeeef8;
+  --sub: #8888aa;
+  --faint: rgba(255,255,255,0.05);
+  --border: rgba(255,255,255,0.08);
+  --card: #0e0e1a;
+  --r: 14px;
+  --r-lg: 22px;
+  --shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+
+html { scroll-behavior: smooth; background: var(--bg); }
+body {
+  font-family: 'Geist', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* grain overlay */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 9999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity: .45;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  backdrop-filter: blur(24px) saturate(160%);
+  background: rgba(8,8,16,0.88);
+  border-bottom: 1px solid var(--border);
+  transition: transform .38s cubic-bezier(0.4,0,0.2,1);
+}
+nav.hidden { transform: translateY(-110%); }
+.nav-inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 0 2rem; height: 62px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.2rem; font-weight: 800;
+  letter-spacing: -0.03em; color: var(--text);
+  text-decoration: none;
+}
+.logo-dot { color: var(--green); }
+.nav-links { display: flex; align-items: center; gap: 0.2rem; }
+.nav-links a {
+  color: var(--sub); text-decoration: none;
+  font-size: 0.875rem; font-weight: 500;
+  padding: 0.45rem 0.85rem; border-radius: 8px;
+  transition: color .2s, background .2s;
+}
+.nav-links a:hover { color: var(--text); background: var(--faint); }
+.nav-cta {
+  background: var(--green) !important; color: #050510 !important;
+  font-weight: 700 !important; margin-left: 0.5rem;
+  box-shadow: 0 0 20px rgba(16,185,129,0.25);
+}
+.nav-cta:hover { opacity: .88 !important; }
+
+/* hamburger */
+.hamburger {
+  display: none; flex-direction: column; justify-content: center;
+  gap: 5px; width: 36px; height: 36px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+}
+.hamburger span {
+  display: block; width: 100%; height: 2px;
+  background: var(--text); border-radius: 2px;
+  transition: all .3s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none; flex-direction: column;
+  position: fixed; top: 62px; left: 0; right: 0; bottom: 0;
+  background: var(--bg); z-index: 99;
+  padding: 2rem; gap: 0.5rem;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  color: var(--text); text-decoration: none;
+  font-size: 1.3rem; font-weight: 600;
+  padding: 0.85rem 0; border-bottom: 1px solid var(--border);
+  transition: color .2s;
+}
+.mobile-menu a:hover { color: var(--green); }
+.mobile-menu .mob-cta {
+  margin-top: 1rem; background: var(--green); color: #050510;
+  text-align: center; border-radius: 10px; border: none;
+  padding: 1rem; font-weight: 800;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100dvh;
+  display: flex; align-items: center;
+  padding: 8rem 0 5rem;
+  position: relative; overflow: hidden;
+}
+.hero-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 55% at 80% 20%, rgba(16,185,129,0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 15% 80%, rgba(61,240,255,0.06) 0%, transparent 55%);
+}
+.hero-inner {
+  max-width: 1100px; margin: 0 auto; width: 100%;
+  padding: 0 2rem; position: relative; z-index: 1;
+}
+.hero-kicker {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--green);
+  margin-bottom: 1.8rem;
+  opacity: 0; animation: fadeUp .6s ease .1s forwards;
+}
+.hero-kicker::before { content: ''; width: 18px; height: 1.5px; background: var(--green); border-radius: 2px; }
+
+.hero h1 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(2.8rem, 6vw, 5.2rem);
+  font-weight: 800; line-height: 1.05;
+  letter-spacing: -0.03em;
+  max-width: 780px; margin-bottom: 1.6rem;
+  opacity: 0; animation: fadeUp .6s ease .2s forwards;
+}
+.hero h1 .accent { color: var(--green); }
+
+.hero-sub {
+  font-size: 1.05rem; color: var(--sub);
+  max-width: 520px; line-height: 1.78; margin-bottom: 2.8rem;
+  opacity: 0; animation: fadeUp .6s ease .3s forwards;
+}
+
+.hero-actions {
+  display: flex; gap: .85rem; flex-wrap: wrap;
+  margin-bottom: 4rem;
+  opacity: 0; animation: fadeUp .6s ease .4s forwards;
+}
+.btn-main {
+  background: var(--green); color: #050510;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700; font-size: .95rem;
+  padding: .85rem 2rem; border-radius: 10px;
+  text-decoration: none; display: inline-flex; align-items: center; gap: .5rem;
+  box-shadow: 0 0 28px rgba(16,185,129,0.3);
+  transition: opacity .2s, transform .15s;
+}
+.btn-main:hover { opacity: .88; transform: translateY(-2px); }
+.btn-sec {
+  background: var(--faint); color: var(--text);
+  border: 1px solid var(--border);
+  font-weight: 500; font-size: .95rem;
+  padding: .85rem 2rem; border-radius: 10px;
+  text-decoration: none; display: inline-flex; align-items: center;
+  transition: border-color .2s, transform .15s;
+}
+.btn-sec:hover { border-color: var(--green); transform: translateY(-2px); }
+
+.hero-stats {
+  display: flex; gap: 3rem; flex-wrap: wrap;
+  padding-top: 3rem; border-top: 1px solid var(--border);
+  opacity: 0; animation: fadeUp .6s ease .5s forwards;
+}
+.stat-n {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 2.2rem; font-weight: 800; color: var(--green); line-height: 1;
+}
+.stat-l { font-size: .8rem; color: var(--sub); margin-top: .3rem; }
+
+/* ── SECTIONS ── */
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+.section { padding: 6rem 0; }
+.section-alt { background: var(--bg1); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.section-kicker {
+  font-size: .7rem; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--green); margin-bottom: .7rem;
+}
+.section-h {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 800; letter-spacing: -0.025em;
+  line-height: 1.12; margin-bottom: .9rem;
+}
+.section-p { color: var(--sub); font-size: .97rem; max-width: 480px; line-height: 1.78; margin-bottom: 3rem; }
+
+/* ── SERVICES GRID ── */
+.services-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden;
+}
+.svc-card {
+  background: var(--card); padding: 2rem 1.8rem;
+  transition: background .2s;
+}
+.svc-card:hover { background: var(--bg2); }
+.svc-icon {
+  width: 44px; height: 44px; border-radius: 11px;
+  background: var(--green-dim); border: 1px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; margin-bottom: 1rem;
+}
+.svc-card h3 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: .95rem; font-weight: 700; margin-bottom: .35rem;
+}
+.svc-card p { font-size: .83rem; color: var(--sub); line-height: 1.65; }
+
+/* ── ABOUT ── */
+.about-grid { display: grid; grid-template-columns: 300px 1fr; gap: 5rem; align-items: center; }
+.about-photo-wrap { position: relative; }
+.about-photo {
+  width: 100%; border-radius: 20px;
+  border: 1px solid var(--border);
+  aspect-ratio: 3/4; object-fit: cover;
+  background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4rem;
+}
+.about-photo-placeholder {
+  width: 100%; border-radius: 20px;
+  border: 1px solid var(--border);
+  aspect-ratio: 3/4;
+  background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4rem;
+}
+.about-badge {
+  position: absolute; bottom: -1rem; right: -1rem;
+  background: var(--green); color: #050510;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: .82rem;
+  padding: .6rem 1rem; border-radius: 10px;
+  line-height: 1.4;
+}
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
+.chip {
+  background: var(--faint); border: 1px solid var(--border);
+  color: var(--sub); font-size: .75rem; font-weight: 600;
+  padding: .3rem .75rem; border-radius: 100px;
+}
+
+/* ── CONTACT ── */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.contact-info h3 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.3rem; font-weight: 800; margin-bottom: .5rem;
+}
+.contact-info p { color: var(--sub); font-size: .9rem; line-height: 1.7; margin-bottom: 2rem; }
+.cinfo-row { display: flex; gap: .85rem; align-items: flex-start; margin-bottom: 1.1rem; }
+.cinfo-ico { font-size: 1.1rem; margin-top: .1rem; flex-shrink: 0; }
+.cinfo-label { font-size: .72rem; font-weight: 600; color: var(--sub); text-transform: uppercase; letter-spacing: .08em; }
+.cinfo-val { font-size: .88rem; color: var(--text); font-weight: 500; }
+.cinfo-val a { color: var(--green); text-decoration: none; }
+.cinfo-val a:hover { text-decoration: underline; }
+
+.form-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 18px; padding: 2rem;
+}
+.fg { margin-bottom: .9rem; }
+.fl { display: block; font-size: .76rem; font-weight: 600; margin-bottom: .35rem; }
+.fl em { color: var(--green); font-style: normal; }
+.fi, .fta {
+  width: 100%; background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 8px; padding: .7rem .95rem; color: var(--text);
+  font-family: 'Geist', sans-serif; font-size: .875rem;
+  outline: none; transition: border-color .2s;
+}
+.fi:focus, .fta:focus { border-color: var(--green); }
+.fta { resize: vertical; min-height: 100px; }
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+.fsub {
+  width: 100%; padding: .88rem; background: var(--green); color: #050510;
+  border: none; border-radius: 9px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: .92rem; cursor: pointer;
+  transition: opacity .2s; margin-top: .3rem;
+}
+.fsub:hover { opacity: .88; }
+.form-ok { display: none; text-align: center; padding: 3rem 1rem; }
+.form-ok .ck { font-size: 2.5rem; margin-bottom: .7rem; }
+.form-ok h3 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.1rem; font-weight: 800; margin-bottom: .3rem; }
+.form-ok p { color: var(--sub); font-size: .85rem; }
+
+/* ── FOOTER ── */
+footer { border-top: 1px solid var(--border); padding: 2rem 0; }
+.footer-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-logo {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800; font-size: 1.1rem; color: var(--text);
+}
+.footer-logo span { color: var(--green); }
+.footer-copy { font-size: .78rem; color: var(--sub); }
+.footer-links { display: flex; gap: 1.2rem; }
+.footer-links a { color: var(--sub); text-decoration: none; font-size: .82rem; transition: color .2s; }
+.footer-links a:hover { color: var(--text); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .services-grid { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .about-photo-wrap { max-width: 240px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .frow { grid-template-columns: 1fr; }
+  .footer-inner { flex-direction: column; text-align: center; }
+  .hero-stats { gap: 2rem; }
+}
+@media (max-width: 600px) {
+  .hero { padding: 7rem 0 4rem; }
+  .section { padding: 4rem 0; }
+}
+
+/* ── LOADING STATE ── */
+.loading-screen {
+  position: fixed; inset: 0; background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10000; transition: opacity .4s;
+}
+.loading-screen.hidden { opacity: 0; pointer-events: none; }
+.loading-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green); animation: pulse 1s infinite;
+}
+@keyframes pulse { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div class="loading-screen" id="loader"><div class="loading-dot"></div></div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-inner">
+    <a href="#" class="logo" id="nav-logo">Načítání<span class="logo-dot">...</span></a>
+    <div class="nav-links">
+      <a href="#sluzby">Služby</a>
+      <a href="#o-mne">O mně</a>
+      <a href="#kontakt" class="nav-cta">Kontakt</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#sluzby" onclick="closeMobile()">Služby</a>
+  <a href="#o-mne" onclick="closeMobile()">O mně</a>
+  <a href="#kontakt" class="mob-cta" onclick="closeMobile()">Kontakt →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-kicker" id="hero-kicker">Načítání</div>
+    <h1 id="hero-h1">...</h1>
+    <p class="hero-sub" id="hero-sub">...</p>
+    <div class="hero-actions">
+      <a href="#kontakt" class="btn-main" id="hero-btn1">Kontaktovat →</a>
+      <a href="#sluzby" class="btn-sec" id="hero-btn2">Naše služby</a>
+    </div>
+    <div class="hero-stats" id="hero-stats"></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<div class="section" id="sluzby">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="section-kicker">Co nabízíme</div>
+      <div class="section-h" id="sluzby-h">Služby</div>
+      <p class="section-p" id="sluzby-p"></p>
+    </div>
+    <div class="services-grid reveal" id="sluzby-grid"></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="section section-alt" id="o-mne">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-photo-wrap reveal">
+        <img src="" alt="" class="about-photo" id="about-foto" onerror="this.style.display='none'; document.getElementById('about-placeholder').style.display='flex'">
+        <div class="about-photo-placeholder" id="about-placeholder" style="display:none">🙂</div>
+        <div class="about-badge" id="about-badge">Jméno<br><span style="font-size:.7rem;opacity:.8;">Pozice</span></div>
+      </div>
+      <div class="reveal">
+        <div class="section-kicker">O mně</div>
+        <div class="section-h" id="about-h">O nás</div>
+        <p id="about-p1" style="color:var(--sub);line-height:1.8;margin-bottom:1rem;"></p>
+        <p id="about-p2" style="color:var(--sub);line-height:1.8;margin-bottom:1.5rem;"></p>
+        <div class="chips" id="about-chips"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="section" id="kontakt">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="section-kicker">Kontakt</div>
+        <div class="section-h" id="kontakt-h">Pojďme spolupracovat</div>
+        <p id="kontakt-p">Ozvěte se nám a domluvíme se na dalším postupu.</p>
+        <div id="kontakt-info"></div>
+      </div>
+      <div class="form-card reveal">
+        <form id="contactForm" name="kontakt" data-netlify="true" data-netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="kontakt">
+          <p hidden><input type="text" name="bot-field"></p>
+          <div class="frow">
+            <div class="fg">
+              <label class="fl">Jméno <em>*</em></label>
+              <input type="text" class="fi" name="jmeno" placeholder="Jan Novák" required>
+            </div>
+            <div class="fg">
+              <label class="fl">E-mail <em>*</em></label>
+              <input type="email" class="fi" name="email" placeholder="jan@firma.cz" required>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">Zpráva <em>*</em></label>
+            <textarea class="fta" name="zprava" placeholder="Napište nám..." required></textarea>
+          </div>
+          <button type="submit" class="fsub">Odeslat zprávu →</button>
+        </form>
+        <div class="form-ok" id="formOk">
+          <div class="ck">✅</div>
+          <h3>Zpráva odeslána!</h3>
+          <p>Ozveme se vám do 24 hodin.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo" id="footer-logo">Firma<span>.cz</span></div>
+    <div class="footer-copy" id="footer-copy">© 2026</div>
+    <div class="footer-links">
+      <a href="#sluzby">Služby</a>
+      <a href="#o-mne">O mně</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── NAČÍTÁNÍ DAT Z JSONu ──
+async function loadContent() {
+  try {
+    const res = await fetch('/content/data.json');
+    if (!res.ok) throw new Error('no data');
+    const d = await res.json();
+
+    // Meta
+    document.title = d.firma_nazev + ' – ' + (d.meta_popis || '');
+    document.getElementById('meta-description').content = d.meta_popis || '';
+
+    // Nav
+    document.getElementById('nav-logo').innerHTML =
+      d.firma_nazev.replace('.', '<span class="logo-dot">.</span>');
+
+    // Hero
+    document.getElementById('hero-kicker').textContent = d.hero_kicker || 'Vítejte';
+    document.getElementById('hero-h1').innerHTML = d.hero_nadpis || d.firma_nazev;
+    document.getElementById('hero-sub').textContent = d.hero_popis || '';
+    if (d.hero_tlacitko1) document.getElementById('hero-btn1').textContent = d.hero_tlacitko1 + ' →';
+    if (d.hero_tlacitko2) document.getElementById('hero-btn2').textContent = d.hero_tlacitko2;
+
+    // Hero stats
+    if (d.statistiky && d.statistiky.length) {
+      document.getElementById('hero-stats').innerHTML = d.statistiky.map(s =>
+        `<div><div class="stat-n">${s.cislo}</div><div class="stat-l">${s.popis}</div></div>`
+      ).join('');
+    }
+
+    // Sluzby
+    document.getElementById('sluzby-h').textContent = d.sluzby_nadpis || 'Naše služby';
+    document.getElementById('sluzby-p').textContent = d.sluzby_popis || '';
+    if (d.sluzby && d.sluzby.length) {
+      document.getElementById('sluzby-grid').innerHTML = d.sluzby.map(s =>
+        `<div class="svc-card">
+          <div class="svc-icon">${s.ikona}</div>
+          <h3>${s.nazev}</h3>
+          <p>${s.popis}</p>
+        </div>`
+      ).join('');
+    }
+
+    // About
+    const foto = document.getElementById('about-foto');
+    if (d.foto) { foto.src = d.foto; foto.alt = d.jmeno || ''; }
+    else { foto.style.display = 'none'; document.getElementById('about-placeholder').style.display = 'flex'; }
+
+    document.getElementById('about-badge').innerHTML =
+      `${d.jmeno || ''}<br><span style="font-size:.7rem;opacity:.8;">${d.pozice || ''}</span>`;
+    document.getElementById('about-h').textContent = d.about_nadpis || 'O mně';
+    document.getElementById('about-p1').textContent = d.about_text1 || '';
+    document.getElementById('about-p2').textContent = d.about_text2 || '';
+    if (d.dovednosti && d.dovednosti.length) {
+      document.getElementById('about-chips').innerHTML = d.dovednosti.map(c =>
+        `<span class="chip">${c}</span>`
+      ).join('');
+    }
+
+    // Kontakt
+    document.getElementById('kontakt-h').textContent = d.kontakt_nadpis || 'Kontakt';
+    document.getElementById('kontakt-p').textContent = d.kontakt_popis || '';
+    const info = [];
+    if (d.email) info.push(`<div class="cinfo-row"><div class="cinfo-ico">📧</div><div><div class="cinfo-label">E-mail</div><div class="cinfo-val"><a href="mailto:${d.email}">${d.email}</a></div></div></div>`);
+    if (d.telefon) info.push(`<div class="cinfo-row"><div class="cinfo-ico">📞</div><div><div class="cinfo-label">Telefon</div><div class="cinfo-val"><a href="tel:${d.telefon.replace(/\s/g,'')}">${d.telefon}</a></div></div></div>`);
+    if (d.mesto) info.push(`<div class="cinfo-row"><div class="cinfo-ico">📍</div><div><div class="cinfo-label">Město</div><div class="cinfo-val">${d.mesto}</div></div></div>`);
+    document.getElementById('kontakt-info').innerHTML = info.join('');
+
+    // Footer
+    document.getElementById('footer-logo').innerHTML =
+      d.firma_nazev.replace('.', '<span style="color:var(--green)">.</span>');
+    document.getElementById('footer-copy').textContent = '© ' + new Date().getFullYear() + ' · ' + (d.mesto || '');
+
+  } catch(e) {
+    // Fallback - žádná data
+    console.warn('data.json nenalezen, zobrazuji výchozí obsah');
+  }
+
+  // Skryj loader
+  document.getElementById('loader').classList.add('hidden');
+  setTimeout(() => document.getElementById('loader').remove(), 500);
+}
+
+loadContent();
+
+// ── REVEAL ──
+const ro = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// ── NAV AUTOHIDE ──
+let lastY = 0, ticking = false;
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      if (y > lastY + 8 && y > 100) nav.classList.add('hidden');
+      else if (y < lastY - 4) nav.classList.remove('hidden');
+      lastY = y; ticking = false;
+    });
+    ticking = true;
+  }
+}, { passive: true });
+
+// ── HAMBURGER ──
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+function closeMobile() {
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── FORMULÁŘ ──
+function encodeForm(data) {
+  return Object.keys(data).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k])).join('&');
+}
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('button[type="submit"]');
+  btn.disabled = true; btn.textContent = 'Odesílám...';
+  const data = {};
+  new FormData(this).forEach((v, k) => data[k] = v);
+  data['form-name'] = 'kontakt';
+  try {
+    const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: encodeForm(data) });
+    if (!res.ok) throw new Error();
+    this.style.display = 'none';
+    document.getElementById('formOk').style.display = 'block';
+  } catch {
+    btn.disabled = false; btn.textContent = 'Odeslat zprávu →';
+    alert('Nepodařilo se odeslat. Zkuste to prosím znovu.');
+  }
+});
+</script>
+</body>
+</html>
