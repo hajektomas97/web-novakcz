@@ -1,41 +1,75 @@
 {
-  "firma_nazev": "Novák.cz",
   "meta_popis": "Profesionální instalatérské služby v Brně a okolí. Rychle, spolehlivě, za férovou cenu.",
-
-  "hero_kicker": "Instalatér · Brno a okolí",
-  "hero_nadpis": "Váš spolehlivý instalatér.<br><span class=\"accent\">Poruchu vyřeším do 24 hodin.</span>",
-  "hero_popis": "Opravím co teče, nainstaluji co chcete. Pracuji rychle, poctivě a za ceny bez překvapení. Vždy přijedu v domluvený čas.",
-  "hero_tlacitko1": "Zavolat hned",
-  "hero_tlacitko2": "Co nabízím",
-
   "statistiky": [
-    { "cislo": "24h", "popis": "Příjezd k havárii" },
-    { "cislo": "15+", "popis": "Let zkušeností" },
-    { "cislo": "500+", "popis": "Spokojených zákazníků" }
+    {
+      "cislo": "24h",
+      "popis": "Příjezd k havárii"
+    },
+    {
+      "cislo": "15+",
+      "popis": "Let zkušeností"
+    },
+    {
+      "cislo": "500+",
+      "popis": "Spokojených zákazníků"
+    }
   ],
-
-  "sluzby_nadpis": "Co umím vyřešit",
-  "sluzby_popis": "Od drobných oprav po kompletní rekonstrukce. Pracuji čistě, rychle a s zárukou.",
-  "sluzby": [
-    { "ikona": "🔧", "nazev": "Opravy a havárie", "popis": "Teče voda, praskla trubka, netěsní sifon? Přijedu do 24 hodin a problém vyřeším." },
-    { "ikona": "🚿", "nazev": "Montáž koupelen", "popis": "Kompletní instalace vany, sprchy, umyvadla nebo WC. Přesně podle vašich představ." },
-    { "ikona": "🌡️", "nazev": "Topení a bojlery", "popis": "Výměna kotle, servis radiátorů, instalace bojleru. Teplo u vás doma i v zimě." },
-    { "ikona": "🏗️", "nazev": "Rekonstrukce", "popis": "Plánujete rekonstrukci koupelny nebo kuchyně? Zajistím kompletní instalatérskou část." },
-    { "ikona": "🔍", "nazev": "Revize a kontroly", "popis": "Pravidelný servis instalací, odhalení skrytých závad dříve než se stanou havárií." },
-    { "ikona": "📋", "nazev": "Poradenství zdarma", "popis": "Nevíte co koupit nebo jak postupovat? Rád poradím ještě před tím, než vám přijedu." }
-  ],
-
-  "foto": "",
   "jmeno": "Petr Novák",
+  "hero_tlacitko1": "Zavolat hned",
+  "foto": "",
+  "hero_tlacitko2": "Co nabízím",
+  "kontakt_nadpis": "Pojďme to vyřešit",
+  "hero_nadpis": "Váš spolehlivý instalatér.<br><span class=\"accent\">Poruchu vyřeším do 24 hodin.</span>",
   "pozice": "Instalatér · OSVČ",
-  "about_nadpis": "Proč zrovna já?",
+  "sluzby_popis": "Od drobných oprav po kompletní rekonstrukce. Pracuji čistě, rychle a s zárukou.",
   "about_text1": "Instalatéřině se věnuji přes 15 let. Začínal jsem jako vyučený instalatér, dnes pracuji sám na sebe a každou zakázku beru jako vlastní. Záleží mi na tom, aby byl zákazník spokojený – ne jen aby se práce udělala.",
   "about_text2": "Pracuji v Brně a do 30 km okolí. Havárií se ujmu do 24 hodin, ostatní práce domluvíme v termínu který vám vyhovuje. Cenu vždy sdělím předem – žádná překvapení na konci.",
-  "dovednosti": ["Topení", "Voda a odpady", "Brno a okolí", "Záruční servis", "25 let zkušeností"],
-
-  "kontakt_nadpis": "Pojďme to vyřešit",
-  "kontakt_popis": "Napište nebo zavolejte. Na zprávy odpovídám zpravidla do 2 hodin. Havárie řeším i o víkendu.",
-  "email": "petr@novak-instalater.cz",
+  "sluzby_nadpis": "Co umím vyřešit",
+  "sluzby": [
+    {
+      "ikona": "🔧",
+      "nazev": "Opravy a havárie",
+      "popis": "Teče voda, praskla trubka, netěsní sifon? Přijedu do 24 hodin a problém vyřeším."
+    },
+    {
+      "ikona": "🚿",
+      "nazev": "Montáž koupelen",
+      "popis": "Kompletní instalace vany, sprchy, umyvadla nebo WC. Přesně podle vašich představ."
+    },
+    {
+      "ikona": "🌡️",
+      "nazev": "Topení a bojlery",
+      "popis": "Výměna kotle, servis radiátorů, instalace bojleru. Teplo u vás doma i v zimě."
+    },
+    {
+      "ikona": "🏗️",
+      "nazev": "Rekonstrukce",
+      "popis": "Plánujete rekonstrukci koupelny nebo kuchyně? Zajistím kompletní instalatérskou část."
+    },
+    {
+      "ikona": "🔍",
+      "nazev": "Revize a kontroly",
+      "popis": "Pravidelný servis instalací, odhalení skrytých závad dříve než se stanou havárií."
+    },
+    {
+      "ikona": "📋",
+      "nazev": "Poradenství zdarma",
+      "popis": "Nevíte co koupit nebo jak postupovat? Rád poradím ještě před tím, než vám přijedu."
+    }
+  ],
+  "mesto": "Brno",
+  "hero_popis": "Opravím co teče, nainstaluji co chcete. Pracuji rychle, poctivě a za ceny bez překvapení. Vždy přijedu v domluvený čas.",
+  "hero_kicker": "Instalatér · Brno a okolí",
   "telefon": "+420 777 123 456",
-  "mesto": "Brno"
+  "about_nadpis": "Proč zrovna já?",
+  "kontakt_popis": "Napište nebo zavolejte. Na zprávy odpovídám zpravidla do 2 hodin. Havárie řeším i o víkendu.",
+  "firma_nazev": "Procházka a jeho banda",
+  "email": "petr@novak-instalater.cz",
+  "dovednosti": [
+    "Topení",
+    "Voda a odpady",
+    "Brno a okolí",
+    "Záruční servis",
+    "25 let zkušeností"
+  ]
 }
