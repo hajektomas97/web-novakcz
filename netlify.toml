@@ -1,11 +1,6 @@
 [build]
   publish = "."
 
-# Netlify Identity pro přihlašování do administrace
-[[plugins]]
-  package = "@netlify/plugin-netlify-identity"
-
-# Bezpečnostní hlavičky
 [[headers]]
   for = "/*"
   [headers.values]
@@ -13,7 +8,6 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Admin stránka
 [[headers]]
   for = "/admin/*"
   [headers.values]
